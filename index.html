@@ -30,8 +30,17 @@
 .team_blue {
   background-color: rgba(0, 0, 255, 0.28);
 }
-  </style>
-  
+.mapping {
+  background-color: #44568b; 
+  font-size: 20px;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.mapping > p {
+  margin: 0px;
+}
+</style>
 
 
 
@@ -184,16 +193,22 @@ $("#shuffle").on('click',function(){
     <ul class="list-group" id="players">
     </ul>
 
-    <p>แผนที่: <span id="map"></span></p>
+   <div class="well mapping">
+      <p>แผนที่: <span id="map"></span></p>
+   </div>
 
     <p>
       <button id="shuffle" class="btn">สุ่มแล้วจัดทีม!</button> 
       <button id="reset" class="btn">รีเซ็ตรายการผู้เล่น!</button>
     </p>
   </div>
+  <div class="row">
+    <p>Fork at <a href="https://github.com/ethaizone/Shuffle-HOTS">Github</a>.</p>
+
+  </div>
 </div>
 
-  Fork at <a href="https://github.com/ethaizone/Shuffle-HOTS">Github</a>.
+  
 
 
 
