@@ -1,0 +1,199 @@
+<html><head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Shuffle HOTS</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>
+  
+  
+  
+  
+    
+      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    
+  
+  <style type="text/css">
+.container-fluid {
+  padding: 20px 30px 20px 30px;
+}
+.player:hover {
+  background-color: rgba(0,0,0, 0.10);
+}
+
+.player:hover:after {
+  content: 'x';
+  float: right;
+}
+.team_red {
+  background-color: rgba(255, 0, 0, 0.28);
+}
+.team_blue {
+  background-color: rgba(0, 0, 255, 0.28);
+}
+  </style>
+  
+
+
+
+<script type="text/javascript">//<![CDATA[
+$(window).load(function(){
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
+var original_players = [
+    'EThaiZone',
+    'iGolf',
+    'Thunderbird',
+    'HeavyMod',
+    'Plugin87',
+    'NodeJS',
+    'Kousuke',
+    'Krucamper',
+    'InwJack',
+    'Alligator'
+];
+
+var maps = [
+  'Battlefield of Eternity',
+  'Blackheart\'s Bay',
+  'Cursed Hollow',
+  'Dragon Shire',
+  'Garden of Terror',
+  'Haunted Mines',
+  'Infernal Shrines',
+  'Sky Temple',
+  'Tomb of the Spider Queen'
+];
+
+var players = [];
+
+//https://github.com/coolaj86/knuth-shuffle
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex ;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function resetPlayer() {
+  $("#map").text("กดสุ่มสิ");
+  players = original_players.slice();
+  renderPlayers();
+}
+
+function renderPlayers() {
+  $("#players").empty();
+  $.each(players, function( index, value ) {
+    var item = $('<li class="list-group-item player"/>').text(value);
+    // alert( index + ": " + value );
+    $("#players").append(item);
+  });
+}
+
+resetPlayer();
+
+$("#players").on('click', '.player', function() { 
+  var $this = $(this);
+  var player = $this.text();
+  if (confirm("วันนี้ '"+player+"' ไม่มาสินะ?")){
+    players.remove(player);
+    renderPlayers();
+  } 
+});
+
+$("#reset").on('click', function(){
+  resetPlayer();
+});
+
+$("#shuffle").on('click',function(){
+  if (players.length%2 != 0) {
+    var notice = "พวกเรามีคนเล่นทั้งหมดจำนวน "
+        +players.length
+        +" คน\n"
+        +"ถ้าสุ่มแล้วจะมีบอทแถมมาด้วยนะ จะสุ่มต่อไหม?";
+    if(! confirm(notice)) {
+      alert("เอาใครสักคนออกให้ลงเลขคู่เถอะ");
+      return;
+    }
+  }
+  shuffle(players);
+  if (players.length%2 != 0) {
+    players.push("## Elite BOT ##");
+  }
+  renderPlayers();
+
+
+  var team_lottery = [0, 1];
+  shuffle(team_lottery);
+
+  $(".player").each(function( index, item ) {
+    var $item = $(item);
+    if (index < (players.length/2)) {
+      if (team_lottery[0] == 1) {
+        $item.addClass("team_red");
+      } else {
+        $item.addClass("team_blue");
+      }
+    } else {
+      if (team_lottery[0] == 1) {
+        $item.addClass("team_blue");
+      } else {
+        $item.addClass("team_red");
+      }
+
+    }
+    
+  });
+
+  shuffle(maps);
+  $("#map").text(maps[0]);
+
+});
+
+
+});//]]> 
+
+</script>
+
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <p>คลิ๊กบนชื่อเพื่อเอาออกจากรายการสำหรับคนที่ไม่เล่นวันนี้</p>
+    <ul class="list-group" id="players">
+    </ul>
+
+    <p>แผนที่: <span id="map"></span></p>
+
+    <p>
+      <button id="shuffle" class="btn">สุ่มแล้วจัดทีม!</button> 
+      <button id="reset" class="btn">รีเซ็ตรายการผู้เล่น!</button>
+    </p>
+  </div>
+</div>
+
+
+
+
+</body></html>
