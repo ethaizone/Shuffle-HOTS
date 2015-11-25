@@ -56,6 +56,15 @@ var WeightedList=function(){function t(t){if(this.weights={},this.data={},this.l
 
 Array.prototype.remove=function(){for(var t,r,e=arguments,i=e.length;i&&this.length;)for(t=e[--i];-1!==(r=this.indexOf(t));)this.splice(r,1);return this};
 
+//https://github.com/coolaj86/knuth-shuffle
+function shuffle(r){for(var f,n,o=r.length;0!==o;)n=Math.floor(Math.random()*o),o-=1,f=r[o],r[o]=r[n],r[n]=f;return r}
+
+var swapArrayElements = function(arr, indexA, indexB) {
+  var temp = arr[indexA];
+  arr[indexA] = arr[indexB];
+  arr[indexB] = temp;
+};
+
 $(window).load(function(){
 
   var original_players = [
@@ -74,37 +83,20 @@ $(window).load(function(){
   var maps = [
     ['Battlefield of Eternity', 1],
     // ['Blackheart\'s Bay', 1],
-    ['Cursed Hollow', 1],
-    ['Dragon Shire', 2],
-    ['Garden of Terror', 1],
-    ['Haunted Mines', 1],
+    ['Cursed Hollow', 2],
+    ['Dragon Shire', 3],
+    ['Garden of Terror', 2],
+    ['Haunted Mines', 2],
     // ['Infernal Shrines', 1],
-    ['Sky Temple', 1],
-    ['Tomb of the Spider Queen', 1],
+    ['Sky Temple', 2],
+    ['Tomb of the Spider Queen', 2],
     ['Towers of Doom', 8]
   ];
 
   var players = [];
 
-  //https://github.com/coolaj86/knuth-shuffle
-  function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex ;
+  var bot = "## Elite BOT ##";
 
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-  }
 
   function resetPlayer() {
     $("#map").text("กดสุ่มสิ");
@@ -112,49 +104,24 @@ $(window).load(function(){
     renderPlayers();
   }
 
-  function renderPlayers() {
+  function renderPlayers(luckyPlayer) {
     $("#players").empty();
     $.each(players, function( index, value ) {
       var item = $('<li class="list-group-item player"/>').text(value);
+      if (value == luckyPlayer)
+      {
+        var $star = $('<span class="glyphicon glyphicon-star" aria-hidden="true" style="margin-left: 5px;"></span>');
+        
+        item.append($star);
+        item.attr('title', 'You are lucky player!');
+      }
       // alert( index + ": " + value );
       $("#players").append(item);
     });
   }
 
-  resetPlayer();
-
-  $("#players").on('click', '.player', function() { 
-    var $this = $(this);
-    var player = $this.text();
-    if (confirm("วันนี้ '"+player+"' ไม่มาสินะ?")){
-      players.remove(player);
-      renderPlayers();
-    } 
-  });
-
-  $("#reset").on('click', function(){
-    resetPlayer();
-  });
-
-  $("#shuffle").on('click',function(){
-    if (players.length%2 != 0) {
-      var notice = "พวกเรามีคนเล่นทั้งหมดจำนวน "
-          +players.length
-          +" คน\n"
-          +"ถ้าสุ่มแล้วจะมีบอทแถมมาด้วยนะ จะสุ่มต่อไหม?";
-      if(! confirm(notice)) {
-        alert("เอาใครสักคนออกให้ลงเลขคู่เถอะ");
-        return;
-      }
-    }
-    shuffle(players);
-    if (players.length%2 != 0) {
-      players.push("## Elite BOT ##");
-    }
-    renderPlayers();
-
-
-    var team_lottery = [0, 1];
+  function teamHighlight() {
+      var team_lottery = [0, 1];
     shuffle(team_lottery);
 
     $(".player").each(function( index, item ) {
@@ -175,12 +142,168 @@ $(window).load(function(){
       }
       
     });
+  }
 
+  function randomMap() {
     var mapList = new WeightedList(maps);
     $("#map").text(mapList.peek()[0]);
+  }
+
+  resetPlayer();
+
+  $("#players").on('click', '.player', function() { 
+    var $this = $(this);
+    var player = $this.text();
+    if (confirm("วันนี้ '"+player+"' ไม่มาสินะ?")){
+      players.remove(player);
+      if (player == bot) {
+        $('#swap_to_bot').attr('disabled', true);
+      }
+      renderPlayers();
+    } 
+  });
+
+  $("#reset").on('click', function(){
+    resetPlayer();
+    $('#swap_to_bot').attr('disabled', true);
+  });
+
+  $("#shuffle").on('click',function(){
+    if (players.length%2 != 0) {
+      var hasBot = false;
+      $.each(players, function( index, player ) {
+        if (player == bot) {
+          players.remove(player);
+          hasBot = true;
+        }
+      });
+
+      if (hasBot == false) {
+        var notice = "พวกเรามีคนเล่นทั้งหมดจำนวน "
+            +players.length
+            +" คน\n"
+            +"ถ้าสุ่มแล้วจะมีบอทแถมมาด้วยนะ จะสุ่มต่อไหม?";
+        if(! confirm(notice)) {
+          alert("เอาใครสักคนออกให้ลงเลขคู่เถอะ");
+          return;
+        }
+      }
+    }
+    shuffle(players);
+    if (players.length%2 != 0) {
+      players.push(bot);
+      $('#swap_to_bot').attr('disabled', false);
+    }
+    renderPlayers();
+
+    teamHighlight();
+    randomMap();
 
   });
 
+  $("#swap_to_bot").on('click', function(e){
+    // check bot number bot must have 1 so I will alert error
+    var botTotal = 0;
+    $.each(players, function( index, value ) {
+      if (value == bot) {
+        botTotal++;
+      }
+    });
+    if (botTotal > 1) {
+      alert("มีบอทมากกว่า 1 ตัว ไม่สามารถสลับทีมได้ กรุณาเอาบอทออกให้เหลือ 1 ด้วย");
+      return false;
+    }
+
+    if (botTotal < 1) {
+      // players.push(bot);
+      // shuffle(players);
+      // renderPlayers();
+      alert("ต้องมีบอท 1 ตัว ไม่สามารถสลับทีมได้");
+      return false;
+    }
+
+    if (players.length%2 != 0) {
+      alert("สมาชิกทีมไม่เท่ากัน ไม่สามารถสลับทีมได้");
+      return false;
+    }
+
+    // find which team that bot is in.
+    var botTeam;
+    $.each(players, function( index, value ) {
+      if (value == bot) {
+        if (players.length/2 > index)
+        {
+          botTeam = 'A';
+        }
+        else
+        {
+          botTeam = 'B';
+        }
+      }
+    });
+    // get team member that don't be with bot and remove 1 member out for act as host same as bot
+    var lucky;
+    var currentMember = [];
+    $.each(players, function( index, value ) {
+      currentMember.push(value);
+    });
+    var migrate;
+    if (botTeam == 'A')
+    {
+      migrate = currentMember.splice(currentMember.length/2, currentMember.length/2);
+    }
+    else
+    {
+      migrate = currentMember.splice(0, currentMember.length/2);
+    }
+    shuffle(migrate);
+    hostHuman = migrate.splice(0, 1);
+
+    // swap member of two team
+    $.each(migrate, function( order, value ) {
+      var foundMigrate;
+      $.each(players, function(i, v ) {
+        if (v == value) {
+          foundMigrate = i;
+        }
+      });
+      var foundReplacement;
+      $.each(players, function(i, v ) {
+        var start;
+        if (botTeam == 'A')
+        {
+          start = 0;
+        }
+        else
+        {
+          start = players.length/2;
+        }
+        // console.log('start', start, botTeam);
+        if (i < start)
+        {
+          return;
+        }
+
+        if (v == bot) {
+          order = order+1;
+          return;
+        }
+        if ((i-start) == order) {
+          foundReplacement = i;
+          return;
+        }
+      });
+      console.log(foundMigrate, foundReplacement);
+      swapArrayElements(players, foundMigrate, foundReplacement);
+    });
+    renderPlayers(hostHuman[0]);
+    teamHighlight();
+    randomMap();
+    // console.log(migrate);
+  });
+  setTimeout(function(){
+    $("#preloader").show();
+  }, 300);
 
 });//]]> 
 
@@ -201,6 +324,7 @@ $(window).load(function(){
     <p>
       <button id="shuffle" class="btn">สุ่มแล้วจัดทีม!</button> 
       <button id="reset" class="btn">รีเซ็ตรายการผู้เล่น!</button>
+      <button id="swap_to_bot" class="btn" disabled>สลับอีกทีมมาเล่นกับบอท!</button>
     </p>
   </div>
   <div class="row">
@@ -209,7 +333,10 @@ $(window).load(function(){
   </div>
 </div>
 
-  
+<!-- preload -->
+<div style="width:1px;height: 1px;overflow: hidden;opacity: 0;" class="hide" id="preloader">
+  <span class="glyphicon glyphicon-star"></span>
+</div>
 
 
 
