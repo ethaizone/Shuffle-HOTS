@@ -35,6 +35,17 @@
 .mapping > p {
   margin: 0px;
 }
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.pointer {
+    cursor: pointer;
+}
 </style>
 
 <script type="text/javascript">
@@ -161,6 +172,10 @@ $(window).load(function(){
       }
       renderPlayers();
     } 
+  });
+
+  $(".mapping").on('click', function(){
+    randomMap();
   });
 
   $("#reset").on('click', function(){
@@ -317,7 +332,7 @@ $(window).load(function(){
     <ul class="list-group" id="players">
     </ul>
 
-   <div class="well mapping">
+   <div class="well mapping noselect pointer">
       <p>แผนที่: <span id="map"></span></p>
    </div>
 
