@@ -108,32 +108,38 @@ $(window).load(function(){
         save_lobby_room.push(value);
       }
     });
+    console.log(save_pending, save_lobby_room);
     bake_cookie('dont_delete_hots_pending', save_pending);
     bake_cookie('dont_delete_hots_lobby_room', save_lobby_room);
   }
 
   function restoreData() {
     save_pending = read_cookie('dont_delete_hots_pending');
-    if($.isArray(save_pending)) {
+    save_lobby_room = read_cookie('dont_delete_hots_lobby_room');
+    if($.isArray(save_pending) && $.isArray(save_lobby_room)) {
+      all_players = [];
       pending = [];
       $.each(save_pending, function( index, value ) {
         if (!isBot(value)) {
           pending.push(value);
+          all_players.push(value);
         }
       });
-    }
-    save_lobby_room = read_cookie('dont_delete_hots_lobby_room');
-    if($.isArray(save_lobby_room)) {
+      
       lobby_room = [];
       $.each(save_lobby_room, function( index, value ) {
         if (!isBot(value)) {
           lobby_room.push(value);
+          all_players.push(value);
         }
       });
+      renderPlayers();
+      return true;
     }
+    return false;
   }
 
-  function renderPlayers(luckyPlayer, addNewPlayer) {
+  function renderPlayers(luckyPlayer, isAddNewPlayer) {
 
     $("#ul_pending").empty();
     $.each(pending, function( index, value ) {
@@ -171,7 +177,7 @@ $(window).load(function(){
 
     $("#span_player_in_lobby").text(player_in_lobby);
 
-    if (! addNewPlayer)
+    if (! isAddNewPlayer)
     {
       // reset form add player
       $(".add-player-form").addClass("hide").prev().removeClass('hide');
@@ -216,8 +222,9 @@ $(window).load(function(){
     $("#map_background").addClass(lastClassMapBG);
   }
 
-  resetPlayer();
-  restoreData();
+  if (! restoreData()) {
+    resetPlayer();
+  }
 
   listenHoldAndClick("#ul_lobby_room", ".player", function($this, isHold){
     var change = false;
@@ -229,7 +236,9 @@ $(window).load(function(){
       }
     } else {
       lobby_room.remove(player);
-      addNewPlayerToPending(player);
+      if(! isBot(player)) {
+        pending.push(player);
+      }
       change = true;
     }
 
@@ -242,15 +251,16 @@ $(window).load(function(){
 
   function isBot(player) {
     if (player.indexOf(bot) == -1) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
-  function addNewPlayerToPending(player)
+  function addNewPlayer(player)
   {
-    if(isBot(player)) {
+    if(! isBot(player)) {
       pending.push(player);
+      all_players.push(player);
       return true;
     }
     return false;
@@ -259,7 +269,7 @@ $(window).load(function(){
   $("#btn_add_player").on('click', function(){
     var $input = $("#input_new_player");
     var player = $input.val();
-    if (!addNewPlayerToPending(player)) {
+    if (!addNewPlayer(player)) {
       alert("คุณไม่สามารถเพิ่มบอทเป็นผู้เล่นได้");
     }
     renderPlayers('', true);
