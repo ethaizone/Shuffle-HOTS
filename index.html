@@ -89,6 +89,9 @@ function listenHoldAndClick(mother, child, callback) {
   });
 
   $(mother).on('mousedown touchstart', child, function(e) { 
+    if (active == true) {
+      return;
+    }
     var coords = getCoords( e );
     startX = coords[ 0 ];
     startY = coords[ 1 ];
