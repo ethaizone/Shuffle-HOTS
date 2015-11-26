@@ -43,14 +43,18 @@ function listenHoldAndClick(mother, child, callback) {
       callback($this, isHold);
       console.log('callback!', isHold);
     };
-    var timeoutId = setTimeout(function(){
-      console.log('hold!');
-      hac_callback(true);
-    }, 900);
+    if (! active)
+    {
+      var timeoutId = setTimeout(function(){
+        console.log('hold!');
+        hac_callback(true);
+      }, 900);
+      
+      $this.data('hac_setTimeout', timeoutId);
+      $this.data('hac_callback', hac_callback);
+    }
 
 
-    $this.data('hac_setTimeout', timeoutId);
-    $this.data('hac_callback', hac_callback);
   });
 }
 

@@ -55,3 +55,11 @@ footer { margin: 20px 0; }
 .map-sky-temple:after { background-image: url("../img/battleground/sky-temple.jpg"); }
 .map-tomb-of-the-spider-queen:after { background-image: url("../img/battleground/tomb-of-the-spider-queen.jpg"); }
 .map-tower-of-doom:after { background-image: url("../img/battleground/tower-of-doom.jpg"); }
+.noselect, .player {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
