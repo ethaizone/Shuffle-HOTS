@@ -18,7 +18,7 @@
 // This code cannot use in commercial.
 function listenHoldAndClick(mother, child, callback) {
   var active = false;
-  $(mother).on('mouseup mouseleave', child, function() { 
+  $(mother).on('mouseup mouseleave touchend', child, function() { 
     var $this = $(this);
     var timeoutId = $this.data('hac_setTimeout');
     var callback = $this.data('hac_callback');
@@ -30,20 +30,24 @@ function listenHoldAndClick(mother, child, callback) {
       callback(false);
     }
 
+    console.log('clear!');
     active = false;
-
     $this.data('hac_setTimeout', 0);
     $this.data('hac_callback', "");
   });
 
-  $(mother).on('mousedown', child, function() { 
+  $(mother).on('mousedown touchstart', child, function() { 
     var $this = $(this);
     var hac_callback = function(isHold){
       active = true;
       callback($this, isHold);
+      active = false;
+      $this.data('hac_setTimeout', 0);
+      $this.data('hac_callback', "");
       console.log('callback!', isHold);
     };
-    if (! active)
+    var timeoutId = $this.data('hac_setTimeout');
+    if (! timeoutId)
     {
       var timeoutId = setTimeout(function(){
         console.log('hold!');
