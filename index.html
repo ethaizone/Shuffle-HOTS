@@ -5,48 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css" >
     
   
-  <style type="text/css">
-.container-fluid {
-  padding: 20px 30px 20px 30px;
-}
-.player:hover {
-  background-color: rgba(0,0,0, 0.10);
-}
-
-.player:hover:after {
-  content: 'x';
-  float: right;
-}
-.team_red {
-  background-color: rgba(255, 0, 0, 0.28);
-}
-.team_blue {
-  background-color: rgba(0, 0, 255, 0.28);
-}
-.mapping {
-  background-color: #44568b; 
-  font-size: 20px;
-  color: #fff;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-.mapping > p {
-  margin: 0px;
-}
-.noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-.pointer {
-    cursor: pointer;
-}
-</style>
 
 <script type="text/javascript">
   /**
@@ -92,25 +53,26 @@ $(window).load(function(){
   ];
 
   var maps = [
-    ['Battlefield of Eternity', 1],
-    // ['Blackheart\'s Bay', 1],
-    ['Cursed Hollow', 2],
-    ['Dragon Shire', 3],
-    ['Garden of Terror', 2],
-    ['Haunted Mines', 2],
-    // ['Infernal Shrines', 1],
-    ['Sky Temple', 2],
-    ['Tomb of the Spider Queen', 2],
-    ['Towers of Doom', 8]
+    ['Battlefield of Eternity', 1, {bg_class: 'map-battlefield-of-eternity'}],
+    // ['Blackheart\'s Bay', 1, {bg_class: 'map-blackheart-bay'}],
+    ['Cursed Hollow', 2, {bg_class: 'map-cursed-hollow'}],
+    ['Dragon Shire', 3, {bg_class: 'map-dragon-shire'}],
+    ['Garden of Terror', 2, {bg_class: 'map-garden-of-terror'}],
+    ['Haunted Mines', 2, {bg_class: 'map-haunted-mine'}],
+    // ['Infernal Shrines', 1, {bg_class: 'map-infernal-shrines'}],
+    ['Sky Temple', 2, {bg_class: 'map-sky-temple'}],
+    ['Tomb of the Spider Queen', 2, {bg_class: 'map-tomb-of-the-spider-queen'}],
+    ['Towers of Doom', 8, {bg_class: 'map-tower-of-doom'}]
   ];
+  var lastClassMapBG;
 
   var players = [];
 
-  var bot = "## Elite BOT ##";
+  var bot = "-- AI Elite --";
 
 
   function resetPlayer() {
-    $("#map").text("กดสุ่มสิ");
+    $("#map").text("Welcome to the Nexus");
     players = original_players.slice();
     renderPlayers();
   }
@@ -121,7 +83,7 @@ $(window).load(function(){
       var item = $('<li class="list-group-item player"/>').text(value);
       if (value == luckyPlayer)
       {
-        var $star = $('<span class="glyphicon glyphicon-star" aria-hidden="true" style="margin-left: 5px;"></span>');
+        var $star = $('<span class="glyphicon glyphicon-star" aria-hidden="true" style="margin-left: 5px; color:orange; text-shadow:none;"></span>');
         
         item.append($star);
         item.attr('title', 'You are lucky player!');
@@ -157,7 +119,15 @@ $(window).load(function(){
 
   function randomMap() {
     var mapList = new WeightedList(maps);
-    $("#map").text(mapList.peek()[0]);
+    var picked = mapList.peek();
+    console.log(picked);
+    $("#map").text(picked[0].key);
+    if (lastClassMapBG)
+    {
+      $("#map_background").removeClass(lastClassMapBG);
+    }
+    lastClassMapBG = picked[0].data.bg_class;
+    $("#map_background").addClass(lastClassMapBG);
   }
 
   resetPlayer();
@@ -174,7 +144,7 @@ $(window).load(function(){
     } 
   });
 
-  $(".mapping").on('click', function(){
+  $("#random_map").on('click', function(){
     randomMap();
   });
 
@@ -317,7 +287,12 @@ $(window).load(function(){
     // console.log(migrate);
   });
   setTimeout(function(){
-    $("#preloader").show();
+    var preloader = $("#preloader");
+    $.each(maps, function(i, v) {
+      var div = $("<div class='map-bg "+v[2].bg_class+"'></div>");
+      preloader.append(div);
+    });
+    preloader.show();
   }, 300);
 
 });//]]> 
@@ -326,30 +301,37 @@ $(window).load(function(){
 
 </head>
 <body>
-<div class="container-fluid">
-  <div class="row">
-    <p>คลิ๊กบนชื่อเพื่อเอาออกจากรายการสำหรับคนที่ไม่เล่นวันนี้</p>
-    <ul class="list-group" id="players">
-    </ul>
-
-   <div class="well mapping noselect pointer">
-      <p>แผนที่: <span id="map"></span></p>
-   </div>
-
-    <p>
-      <button id="shuffle" class="btn">สุ่มแล้วจัดทีม!</button> 
-      <button id="reset" class="btn">รีเซ็ตรายการผู้เล่น!</button>
-      <button id="swap_to_bot" class="btn" disabled>สลับอีกทีมมาเล่นกับบอท!</button>
-    </p>
-  </div>
-  <div class="row">
-    <p>Fork at <a href="https://github.com/ethaizone/Shuffle-HOTS">Github</a>.</p>
-
-  </div>
+<h1 class="header">Heroes of the Storm</h1>
+<div class="container-fluid map-bg" id="map_background">
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3 inner-container">
+			<div class="mapping noselect pointer">
+				<h1 id="map"></h1>
+			</div>
+			<div class="player-list">
+				<ul class="list-group" id="players">
+				</ul>
+				<button id="shuffle" class="btn btn-primary btn-block btn-lg">สุ่มแล้วจัดทีม!</button>
+				<button id="swap_to_bot" class="btn btn-default btn-block" disabled>สลับอีกทีมมาเล่นกับบอท!</button>
+				<p class="help-block text-center">คลิกบนชื่อเพื่อเอาออกจากรายการสำหรับคนที่ไม่เล่นวันนี้</p>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<button id="reset" class="btn btn-default btn-block">รีเซ็ตรายการผู้เล่น!</button>
+				</div>
+				<div class="col-sm-6">
+					<button id="random_map" class="btn btn-default btn-block">Random Battleground</button>
+				</div>
+			</div>
+		</div> <!-- /.col-sm-8 -->
+	</div> <!-- /.row -->
+	<footer class="text-center">
+		<p>Fork at <a href="https://github.com/ethaizone/Shuffle-HOTS">Github</a>.</p>
+	</footer>
 </div>
 
 <!-- preload -->
-<div style="width:1px;height: 1px;overflow: hidden;opacity: 0;" class="hide" id="preloader">
+<div style="width:1px;height: 1px;overflow: hidden;opacity: 0; display:none;" id="preloader">
   <span class="glyphicon glyphicon-star"></span>
 </div>
 

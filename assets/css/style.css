@@ -1,0 +1,51 @@
+html, body { background-color: #08000f; }
+body { background: url("../img/main-bg.jpg") no-repeat center top #08000f; }
+#map { color: #fff; text-align: center; text-transform: uppercase; font-size: 1.4em; margin-bottom: 20px; text-shadow: 0 1px 0 #000; }
+.btn { border: none; border-radius: 0; font-weight: bold; transition: border .25s ease; }
+.btn-default, .btn-default:active, .btn-default:active:focus, .btn-default:active:hover { color: #00d8ff;
+	border: 1px solid #112E62;
+	background: #081c34;
+	background: rgba(8, 28, 52, .5);
+	background: linear-gradient(rgba(8, 28, 52, .5), rgba(7, 45, 87, .5) 50%, rgba(34, 54, 127, .5));
+	background-position: 100% 0, 0 0 }
+.btn-default:hover { color: #fff;
+	border: 1px solid #112E62;
+	background: #081c34;
+	background: rgba(8, 28, 52, .75);
+	background: linear-gradient(rgba(8, 28, 52, .75), rgba(7, 45, 87, .75) 50%, rgba(34, 54, 127, .75));
+	background-size: 1px 100%;
+	background-position: 100% 0, 0 0;
+	box-shadow: 0 0 10px rgba(0, 102, 153, .25) }
+.btn-default[disabled] { color: #ddd; background: none; opacity: .3; }
+.btn-primary, .btn-primary:active, .btn-primary:active:focus, .btn-primary:active:hover { color: #fff;
+	border: 1px solid #ffb674;
+	background: #f90;
+	background: linear-gradient(#f90, #f60); }
+.btn-primary:hover { border-color: #fff; }
+.header { background: url("../img/header-bg.png") no-repeat center top; height: 133px; text-indent: -999em; overflow: hidden; display: block; margin: 0; }
+.player-list { padding: 30px; margin-bottom: 20px; position: relative; border: 2px solid #6d67d6; background-color: rgba(16,16,48,.5); }
+.player-list ul { border-radius: 0; }
+.player-list li { margin-bottom: 1px; border-radius: 0 !important; color: #fff; font-weight: bold; background-color: rgba(27,27,74,.7); border: none; border-left: 3px solid transparent; border-bottom: 1px solid #222655; position: relative; }
+.player-list li.team_red { background-color: rgba(71,28,45,.7); border-left: 3px solid #f26367; border-bottom: 1px solid #682c44; text-shadow: 0 0 8px red; }
+.player-list li.team_blue { border-left: 3px solid #6eeeff; text-shadow: 0 0 8px lightblue; }
+.player-list li:hover { cursor: pointer; background-color: rgba(35,35,92,.7); }
+.player-list li.team_red:hover { background-color: rgba(92,39,60,.7); }
+.player-list li:hover:after { display: block; content: "KICK"; right: 10px; top: 10px; position: absolute; opacity: .3; text-shadow: none; }
+.btn#shuffle, .btn#reset { margin-bottom: 10px; }
+.btn#swap_to_bot { margin-bottom: 20px; }
+.player-list .help-block { color: #3d6f95; margin: 0; }
+.inner-container { z-index: 2; }
+footer { margin: 20px 0; }
+
+.map-bg { position: relative; z-index: 2; }
+.map-bg:after { position: absolute; width: 100%; height: 100%; background-position: center top; background-repeat: no-repeat; z-index: 1; opacity: .5; left: 0; top: 0; display: block; content: ""; }
+.map-battlefield-of-eternity:after { background-image: url("../img/battleground/battlefield-of-eternity.jpg"); }
+.map-blackheart-bay:after { background-image: url("../img/battleground/blackheart-bay.jpg"); }
+.map-cursed-hollow:after { background-image: url("../img/battleground/cursed-hollow.jpg"); }
+.map-dragon-shire:after { background-image: url("../img/battleground/dragon-shire.jpg"); }
+.map-garden-of-terror:after { background-image: url("../img/battleground/garden-of-terror.jpg"); }
+.map-haunted-mine:after { background-image: url("../img/battleground/haunted-mine.jpg"); }
+.map-infernal-shrines:after { background-image: url("../img/battleground/infernal-shrines.jpg"); }
+.map-sky-temple:after { background-image: url("../img/battleground/sky-temple.jpg"); }
+.map-tomb-of-the-spider-queen:after { background-image: url("../img/battleground/tomb-of-the-spider-queen.jpg"); }
+.map-tower-of-doom:after { background-image: url("../img/battleground/tower-of-doom.jpg"); }
