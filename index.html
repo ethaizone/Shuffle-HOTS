@@ -49,7 +49,7 @@ function listenHoldAndClick(mother, child, callback) {
       return;
     }
 
-    if( cancel || w.tapHandling && w.tapHandling !== e.type ){
+    if( cancel || tapHandling && tapHandling !== e.type ){
       cancel = false;
       return;
     }
