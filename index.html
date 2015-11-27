@@ -350,6 +350,20 @@ $(window).load(function(){
   $("#btn_add_player").on('click', function(){
     var $input = $("#input_new_player");
     var player = $input.val();
+    if (! player || player.length == 0) {
+      alert("กรุณาใส่ชื่อผู้เล่นด้วย");
+      return;
+    }
+    var exists = false;
+    $.each(all_players, function(i, v) {
+      if (player == v) {
+        exists = true;
+      }
+    });
+    if (exists && !isBot(player)) {
+      alert("ชื่อผู้เล่นนี้มีอยู่แล้ว");
+      return;
+    }
     if (!addNewPlayer(player)) {
       alert("คุณไม่สามารถเพิ่มบอทเป็นผู้เล่นได้");
     }
@@ -374,6 +388,10 @@ $(window).load(function(){
         change = true;
       }
     } else {
+      if (lobby_room.length >= 10) {
+        alert("คุณไม่สามารถเพิ่มผู้เล่นได้มากกว่านี้");
+        return;
+      }
       pending.remove(player);
       lobby_room.push(player);
       change = true;
@@ -546,7 +564,7 @@ $(window).load(function(){
 <h1 class="header">Heroes of the Storm</h1>
 <div class="container-fluid map-bg" id="map_background">
 	<div class="row">
-		<div class="col-sm-6 col-sm-offset-3 inner-container">
+		<div class="col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4 inner-container">
 			<div class="mapping noselect pointer">
 				<h1 id="map"></h1>
 			</div>
