@@ -24,7 +24,7 @@ var swapArrayElements = function(arr, indexA, indexB) {
 
 //http://stackoverflow.com/questions/11344531/pure-javascript-store-object-in-cookie
 function bake_cookie(name, value) {
-  var cookie = [name, '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
+  var cookie = [name, '=', JSON.stringify(value), '; expires=Thu, 01-Jan-2299 00:00:01 GMT; domain=.', window.location.host.toString(), '; path=/;'].join('');
   document.cookie = cookie;
 }
 function read_cookie(name) {
