@@ -30,9 +30,12 @@ body { background: url("../img/main-bg.jpg") no-repeat center top #08000f; }
 .player-list li.team_blue { border-left: 3px solid #6eeeff; text-shadow: 0 0 8px lightblue; }
 .player-list li:hover { cursor: pointer; background-color: rgba(35,35,92,.7); }
 .player-list li.team_red:hover { background-color: rgba(92,39,60,.7); }
-#players li.player:hover:after, #pending li.player:hover:after { display: block; right: 15px; top: 10px; position: absolute; opacity: .3; text-shadow: none; }
-#players li.player:hover:after { content: "KICK"; }
-#pending li.player:hover:after { content: "INVITE"; }
+.player-list li.team_red:after { color: #68374B !important; }
+.player-list li.player-empty { color: #444475; cursor: default !important; }
+.player-list li.player-empty:hover { background-color: rgba(27,27,74,.7); }
+#ul_lobby_room li.player:after, #ul_pending li.player:after { display: block; right: 15px; top: 10px; position: absolute; color: #444475; text-shadow: none; font-size: .8em;line-height: 1.6em; }
+#ul_lobby_room li.player:after { content: "KICK"; }
+#ul_pending li.player:after { content: "INVITE"; }
 .player-list li.add-player { border-top: 2px solid #6d67d6; }
 .add-player-form { padding: 0; }
 .add-player-form input[type="text"] { border-radius: 0; border: none; }
