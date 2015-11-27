@@ -20,7 +20,8 @@ body { background: url("../img/main-bg.jpg") no-repeat center top #08000f; }
 .btn-primary, .btn-primary:active, .btn-primary:active:focus, .btn-primary:active:hover { color: #fff;
 	border: 1px solid #ffb674;
 	background: #f90;
-	background: linear-gradient(#f90, #f60); }
+	background: linear-gradient(#f90, #f60);
+	text-transform: uppercase; }
 .btn-primary:hover { border-color: #fff; }
 .header { background: url("../img/header-bg.png") no-repeat center top; height: 133px; text-indent: -999em; overflow: hidden; display: block; margin: 0; }
 .player-list { padding: 30px; margin-bottom: 20px; position: relative; border: 2px solid #6d67d6; background-color: rgba(16,16,48,.5); }
