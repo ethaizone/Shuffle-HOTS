@@ -38,6 +38,13 @@ function listenHoldAndClick(mother, child, callback) {
     resetTimer,
     tapHandling;
   $(mother).on('mouseup mouseleave touchend', child, function(e) { 
+    var $this = $(this);
+    var timeoutId = $this.data('hac_setTimeout');
+    var callback = $this.data('hac_callback');
+    if (! timeoutId) {
+      return;
+    }
+
     clearTimeout( resetTimer );
     resetTimer = setTimeout( function(){
       tapHandling = false;
@@ -56,9 +63,6 @@ function listenHoldAndClick(mother, child, callback) {
 
     tapHandling = e.type;
 
-    var $this = $(this);
-    var timeoutId = $this.data('hac_setTimeout');
-    var callback = $this.data('hac_callback');
 
     if (timeoutId && !active)
     {
@@ -93,8 +97,11 @@ function listenHoldAndClick(mother, child, callback) {
       return;
     }
     var coords = getCoords( e );
-    startX = coords[ 0 ];
-    startY = coords[ 1 ];
+    if (coords) {
+      startX = coords[ 0 ];
+      startY = coords[ 1 ];
+    }
+    console.log('start!');
     var $this = $(this);
     var hac_callback = function(isHold){
       active = true;
@@ -207,6 +214,8 @@ $(window).load(function(){
 
   function renderPlayers(luckyPlayer, isAddNewPlayer) {
 
+    var li_empty = $('<li class="list-group-item player-empty"/>').text('Empty');
+
     $("#ul_pending").empty();
     $.each(pending, function( index, value ) {
       var item = $('<li class="list-group-item player"/>').text(value);
@@ -219,6 +228,9 @@ $(window).load(function(){
       }
       $("#ul_pending").append(item);
     });
+    if (pending.length < 1) {
+      $("#ul_pending").append(li_empty);
+    }
 
     $("#ul_lobby_room").empty();
     $.each(lobby_room, function( index, value ) {
@@ -232,6 +244,9 @@ $(window).load(function(){
       }
       $("#ul_lobby_room").append(item);
     });
+    if (lobby_room.length < 1) {
+      $("#ul_lobby_room").append(li_empty);
+    }
 
     // create text tell players in lobby
     var player_in_lobby = lobby_room.length+" ";
