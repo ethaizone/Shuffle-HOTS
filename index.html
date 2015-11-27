@@ -5,8 +5,8 @@
 	<title>Shuffle HOTS</title>
 	
 	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script type="text/javascript" src="assets/vendors/jquery/jquery-1.11.3.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/vendors/bootstrap-3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css" >
 	<link rel="apple-touch-icon" sizes="57x57" href="assets/img/apple-icon-57x57.png" />
 	<link rel="apple-touch-icon" sizes="72x72" href="assets/img/apple-icon-72x72.png" />
@@ -251,6 +251,9 @@ $(window).load(function(){
     });
     if (lobby_room.length < 1) {
       $("#ul_lobby_room").append(li_empty);
+      $('#shuffle').attr("disabled", true);
+    } else {
+      $('#shuffle').attr("disabled", false);
     }
 
     // create text tell players in lobby
