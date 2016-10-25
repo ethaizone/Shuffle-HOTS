@@ -1,4 +1,4 @@
-var $ = require("./../vendors/jquery/jquery-1.11.3.min");
+window.$ = require("./../vendors/jquery/jquery-1.11.3.min");
 var {
   WeightedList,
   shuffle,
