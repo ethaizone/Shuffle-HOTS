@@ -59,6 +59,10 @@ footer { margin: 20px 0; }
 .map-sky-temple:after { background-image: url("../img/battleground/sky-temple.jpg"); }
 .map-tomb-of-the-spider-queen:after { background-image: url("../img/battleground/tomb-of-the-spider-queen.jpg"); }
 .map-tower-of-doom:after { background-image: url("../img/battleground/tower-of-doom.jpg"); }
+.map-braxis-holdout:after { background-image: url("../img/battleground/braxis-holdout.jpg"); }
+.map-hanamura:after { background-image: url("../img/battleground/hanamura.jpg"); }
+.map-volskaya-foundry:after { background-image: url("../img/volskaya-foundry.jpg"); }
+.map-warhead-junction:after { background-image: url("../img/battleground/warhead-junction.jpg"); }
 .noselect, .player {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
