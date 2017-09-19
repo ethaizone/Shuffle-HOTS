@@ -8,7 +8,11 @@ var map = [
   ['Infernal Shrines', 1, {bg_class: 'map-infernal-shrines'}],
   ['Sky Temple', 1, {bg_class: 'map-sky-temple'}],
   ['Tomb of the Spider Queen', 1, {bg_class: 'map-tomb-of-the-spider-queen'}],
-  ['Towers of Doom', 1, {bg_class: 'map-tower-of-doom'}]
+  ['Towers of Doom', 1, {bg_class: 'map-tower-of-doom'}],
+  ['Braxis Holdout', 1, {bg_class: 'map-braxis-holdout'}],
+  ['Hanamura', 1, {bg_class: 'map-hanamura'}],
+  ['Volskaya Foundry', 1, {bg_class: 'map-volskaya-foundry'}],
+  ['Warhead Junction', 1, {bg_class: 'map-warhead-junction'}]
 ]
 
 export default map
